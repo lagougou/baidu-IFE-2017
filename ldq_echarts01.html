@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>折线与柱状组合图</title>
+    <script src="echarts.js"></script>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        //转化率（折线上的symbol）
+        //其中tooltip没做好~
+        var bar={
+                name:'伪造的销量',
+                type:'bar',
+                data:[20,40,60,50]
+            };
+        var line={
+                name:'伪造的浏览次数',
+                type:'line',
+                yAxisIndex:1,
+                data:[200,433,562,233],
+                symbol:'circle',
+                lineStyle:{
+                    normal:{
+                        width:5,
+
+                    }
+                },
+            };
+        line.data=line.data.map(function(item,index){
+            var temp=[];
+            temp.push(index);
+            temp.push(item);
+            temp.push(Math.round(bar.data[index]/item*100));
+            return temp;
+        });
+        line.symbolSize=function(data){
+            return data[2]*2;
+        };
+        var axisLabel={textStyle:{fontSize:18}};
+        var option={
+            title:{
+                text:'尝试手写Echarts',
+//                subtext:'只求一个自动补全编辑器(-｡-;)',//本地编辑的效果跟在线编辑器编辑的效果不一样啊~
+                left:'10%'
+            },
+
+            xAxis:{
+                type:'category',
+                data:['360','mi','huawei','samsung'],
+                axisLabel:axisLabel,
+            },
+            yAxis:[{
+                type:'value',
+                axisLabel:axisLabel,
+                name:'销量',
+                nameLocation:'middle',
+                nameGap:40,
+                nameTextStyle:{
+                    fontSize:20
+                }
+            },{
+                type:'value',
+                axisLabel:axisLabel,
+                name:'浏览次数',
+                nameLocation:'middle',
+                nameGap:50,
+                nameRotate:-90,
+                nameTextStyle:{
+                    fontSize:20
+                }
+            }],
+            tooltip:{},
+            legend:{
+                data:['伪造的销量','伪造的浏览次数'],
+                right:'10%',
+                top:'2%',
+
+            },
+            series:[bar,line]
+        };
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
