@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>baidu ife yaoyao-1</title>
+        <meta name="author" content="lzl">
+        <meta name="description" content="ife task yy-1">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            form[id='nameCheck']{
+                display: table;
+                padding: 10px
+            }
+            button[id='submit']{
+                display: table-cell;
+                padding: 8px 16px;
+                background-color: blue;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                margin-left: 10px;
+            }
+            input{
+                display: table-cell;
+                font-size: 18px;
+                border: 1px solid #999;
+                border-radius: 3px;
+                line-height: 20px;
+                padding: 5px 10px;
+            }
+            label{
+                display: table-cell;
+                text-align: center;
+                width: 100px;
+                font-weight: bold;
+                font-size: 15px;
+            }
+            p{
+                color: #999;
+                font-size: 12px;
+            }
+            /*验证结果的正确与否用下面的class表示*/
+            .error{
+                border: 2px solid #b00;
+            }
+            .correct{
+                border: 2px solid #0a0;
+            }
+            .errorText{
+                color: #b00;
+            }
+            .correctText{
+                color: #0a0;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="nameCheck">
+            <label for="name">名称</label>
+            <input id='name'>
+            <button id='submit'>验证</button>
+            <p id="nameCheckResult">必填，长度为4-16个字符</p>
+        </form>
+        
+        <script>
+            var $=function(id){
+                return document.getElementById(id);
+            };
+//            
+//            下面是结果样式函数resultStyle，其中，
+//              inputNode表示input输入框节点，
+//              pNode表示下面提示文字p段落节点，
+//              bool表示显示正确样式或错误样式，
+//              tip表示pNode所显示的提示文字，默认值是error
+//            该函数有两种用法：
+//              一、如果只有两个参数，则样式恢复默认灰色；
+//              二、如果参数大于2，根据所给bool给出不同样式
+//            
+            function resultStyle(inputNode,pNode,bool,tip='error'){
+                if(arguments.length==2){
+                    inputNode.className='';
+                    pNode.className='';
+                }else if(arguments.length>2){
+                    if(bool){
+                        inputNode.className='correct';
+                        pNode.className='correctText';
+                    }else{
+                        inputNode.className='error';
+                        pNode.className='errorText';
+                    }
+                    pNode.innerHTML=tip;
+                }else{
+                    console.log('缺少必要参数');
+                }
+            }
+            //下面是文本长度函数txtLength，与原生length不同的是，此处的每个汉字，中文符号长度为2
+            function txtLength(str){
+                const reg=/[\u0391-\uFFE5]/g;
+                let len=0;
+                while(reg.exec(str)){
+                    len++;
+                }
+                return str.length+len;
+            }
+            
+            window.onload=function(){
+                const txt=$('name'),result=$('nameCheckResult'),check=$('submit');
+                txt.onclick=function(){
+                    resultStyle(txt,result);
+                    result.innerHTML='必填，长度为4-16个字符';
+                };
+                check.onclick=function(){
+                    if(!txt.value){
+                        resultStyle(txt,result,false,'姓名不能为空');
+                    }else{
+                        const tmp=txtLength(txt.value);
+                        if(tmp>=4&&tmp<=16){
+                            resultStyle(txt,result,true,'名称格式正确');
+                        }else{
+                            resultStyle(txt,result,false,'名称格式错误');
+                        }
+                    }
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>    

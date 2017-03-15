@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>baidu ife yaoyao-1</title>
+        <meta name="author" content="lzl">
+        <meta name="description" content="ife task yy-1">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            form[id='nameCheck']{
+                padding: 10px;
+                display: table;
+                
+            }
+            button[id='submit']{
+                padding: 8px 16px;
+                background-color: #00d;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+            }
+            div.tableRow{
+                display: table-row; 
+            }
+            input{
+                display: table-cell;
+                font-size: 18px;
+                border: 1px solid #999;
+                border-radius: 3px;
+                line-height: 20px;
+                padding: 5px 10px;
+            }
+            label{
+                display: table-cell;
+                text-align: right;
+                min-width: 60px;
+                font-weight: bold;
+                font-size: 15px;
+                padding-right: 10px;
+            }
+            p{
+                color: #999;
+                font-size: 12px;
+                margin-bottom: 20px;
+            }
+            /*验证结果的正确与否用下面的class表示*/
+            .error{
+                border: 2px solid #b00;
+            }
+            .correct{
+                border: 2px solid #0a0;
+            }
+            .errorText{
+                color: #b00;
+            }
+            .correctText{
+                color: #0a0;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="nameCheck">
+            <div class="tableRow">
+                <label for="name">名称</label>
+                <input id='name'>
+                <p id="nameCheckResult"></p>
+            </div>
+            <div class="tableRow">
+                <label for="password">密码</label>
+                <input id='password' type="password">
+                <p id="passwordCheckResult"></p>
+            </div>
+            <div class="tableRow">
+                <label for="passwordAgain">确认密码</label>
+                <input id='passwordAgain' type="password">
+                <p id="passwordAgainCheckResult"></p>
+            </div>
+            <div class="tableRow">
+                <label for="email">邮箱</label>
+                <input id='email' type="email">
+                <p id="emailCheckResult"></p>
+            </div>
+            <div class="tableRow">
+                <label for="phone">手机</label>
+                <input id='phone' type="tel">
+                <p id="phoneCheckResult"></p>
+            </div>
+            <button id='submit'>验证</button>
+        </form>
+        
+        <script>
+            var $=function(id){
+                return document.getElementById(id);
+            };
+//            
+//            下面是结果样式函数resultStyle，其中，
+//              inputNode表示input输入框节点，
+//              pNode表示下面提示文字p段落节点，
+//              bool表示显示正确样式或错误样式，
+//              tip表示pNode所显示的提示文字，默认值是error
+//            该函数有两种用法：
+//              一、如果只有两个参数，则样式恢复默认灰色；
+//              二、如果参数大于2，根据所给bool给出不同样式
+//            
+            function resultStyle(inputNode,pNode,bool,tip=''){
+                if(arguments.length==2){
+                    inputNode.className='';
+                    pNode.className='';
+                }else if(arguments.length>2){
+                    if(bool){
+                        inputNode.className='correct';
+                        pNode.className='correctText';
+                    }else{
+                        inputNode.className='error';
+                        pNode.className='errorText';
+                    }
+                    pNode.innerHTML=tip;
+                }else{
+                    console.log('缺少必要参数');
+                }
+            }
+//            下面是文本长度函数txtLength，与原生length不同的是，此处的每个汉字，中文符号长度为2,str为需检测字符串
+            function txtLength(str){
+                const reg=/[\u0391-\uFFE5]/g;
+                let len=0;
+                while(reg.exec(str)){
+                    len++;
+                }
+                return str.length+len;
+            }
+//            下面是input框内容的检测流程函数，其中，
+//            inputNode表示input输入框节点，
+//            pNode表示下面提示文字p段落节点，
+//            bool检测输入值是否符合，该值由下面的fn函数确定
+//            tip为inputNode框对应的label
+            function checkSub(inputNode,pNode,bool,tip=''){
+                if(!inputNode.value){
+                    resultStyle(inputNode,pNode,false,tip+'不能为空');
+                }else{
+                    if(bool){
+                        resultStyle(inputNode,pNode,true,tip+'格式正确');
+                    }else{
+                        resultStyle(inputNode,pNode,false,tip+'格式错误');
+                    }
+                }
+            }
+            
+            window.onload=function(){
+//                下面的obj对象储存了所有的数据，其中：
+//                inputNode用于储存input框节点，
+//                pNode用于储存input框对应的提示框节点，
+//                labelArr是所有input的id值，
+//                label是所有input框id值对应的中文，
+//                tip为对应的要求信息，
+//                state为每个input框的校验状态，默认为false只有当所有的校验值为true时才能检验成功。
+//                init为初始化函数，用于获取inputNode、pNode以及设置state
+                let obj={
+                    inputNode:[],
+                    pNode:[],
+                    labelArr:['name','password','passwordAgain','email','phone'],
+                    label:['名称','密码','确认密码','邮箱','手机'],
+                    tip:['必填，长度为4-16个字符','必填，长度为6-16个英文字符或数字','必填，请再次输入密码','必填，请输入邮箱地址','必填，请输入11位手机号码'],
+                    state:[],
+                    init:function(){
+                        this.labelArr.forEach(function(item){
+                            obj.inputNode.push($(item));
+                            obj.pNode.push($(item+'CheckResult'));});
+                            obj.state.push(false);
+                    }
+                };
+                obj.init();//初始化obj对象
+                
+//                下面是用于检验所输入值是否符合要求的函数，
+//                不同的input要求不同，这里采用switch进行区分，
+//                如需拓展只需在obj.labelArr中加上对应的tag即可。
+//                这里返回的是一个数组，其中第一个值为布尔值，第二个可选的元素是字符串，这里主要用来区别确认密码框的提示
+                function fn(val,tag){
+                    switch(tag){
+                        case obj.labelArr[0]:
+                            return [txtLength(val)>=4&&txtLength(val)<=16];
+                            break;
+                        case obj.labelArr[1]:
+                            return [txtLength(val)>=6&&txtLength(val)<=16];
+                            break;
+                        case obj.labelArr[2]:
+                            if (obj.state[1]){
+                                return [obj.inputNode[1].value===val,'密码不同，请输入正确密码'];
+                            }else{
+                                return [false,'请先输入密码'];
+                            }
+                            break;
+                        case obj.labelArr[3]:
+                            const emailReg=/^\w+@\w+\.\w+$/g;
+                            return [emailReg.test(val)];
+                            break;
+                        case obj.labelArr[4]:
+                            const phoneReg=/^\d{11}$/g;
+                            return [phoneReg.test(val)];
+                            break;
+                        default:
+                            console.log('非法参数');
+                            return undefined;
+                    }
+                }
+//                为每一个input框添加onfocus与onblur函数
+                obj.inputNode.forEach(function(item,index){
+                    item.onfocus=function(){
+                        resultStyle(item,obj.pNode[index]);//恢复默认样式
+                        obj.pNode[index].innerHTML=obj.tip[index];//添加提示信息
+                    };
+                    item.onblur=function(){
+                        const che=fn(item.value,obj.labelArr[index]);
+                        checkSub(item,obj.pNode[index],che[0],obj.label[index]);
+                        obj.state[index]=che[0];//改变相应状态
+                        //如果是确认密码框，则还需添加下面步骤
+                        if(che.length>1){
+                            if(!che[0]) obj.pNode[index].innerHTML=che[1];
+                        }
+                    };
+                });
+//                验证按钮的函数，通过检测obj对象的state状态数组来检测验证情况
+//                注意，后面return false是防止页面刷新
+                $('submit').onclick=function(){
+                    const st=obj.state.every((item)=>item);
+                    st?alert('检验通过'):alert('检验失败，请修改');
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>    
