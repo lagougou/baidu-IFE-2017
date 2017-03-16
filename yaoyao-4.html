@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>baidu ife yaoyao-4</title>
+        <meta name="author" content="lzl">
+        <meta name="description" content="ife task yy-4">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            table{
+                border-collapse: collapse;
+            }
+            td{
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                font-weight: bolder;
+            }
+            td:not([id*='xy']){
+                border: 1px solid #aaa;
+            }
+            td[id*='0-0']{
+                border: 0px solid #aaa;
+            }
+            .block{
+                background-color: #f00;
+                box-sizing: border-box;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <table id="table" style="border-top:'2px solid #ff2'"></table>
+        <input id="commandTxt" list='com'>
+        <datalist id="com"></datalist>
+        <button id="command">执行</button>
+        <script>
+            const $=function(id){return document.getElementById(id)};
+            //所用的的数据
+            const data={
+                //棋盘大小
+                size:[10,10],
+                //棋子状态，此状态可以改变
+                obj:{
+                    position:[6,6],
+                    state:'top'//对应下面的direction
+                },
+                //方向，顺时针排列
+                direction:['top','right','bottom','left'],
+                //方向所对应的移动坐标变化
+                directionMove:[[-1,0],[0,1],[1,0],[0,-1]],
+                //指令集
+                commandArr:['GO','TUN LEF','TUN RIG','TUN BAC'],
+                //指令集对应的转动量，注意在转动的时候模4
+                commandArrShift:[0,3,1,2]
+            };
+            //渲染棋子，传入的obj为棋子的对象，包括position及state两个属性。
+            //渲染之前首先清除旧的对象
+            function render(obj){
+                const old=$('block');
+                if(old){
+                    old.parentElement.removeChild(old);
+                }
+                $('cell'+obj.position[0]+'-'+obj.position[1]).innerHTML='<div id="block" class="block" style="border-'+obj.state+': 8px solid #00f;"></div>';
+            }
+            //不同指令的对象变化处理，commandTxt为指令字符串
+            function command(commandTxt){
+                const index=data.commandArr.indexOf(commandTxt);
+                if(index===-1){
+                    alert('指令错误，请重新输入');
+                }else{
+                    //now为原先的方向索引
+                    const now=data.direction.indexOf(data.obj.state);
+                    //对now进行方向偏移，得到新的方向
+                    data.obj.state=data.direction[(now+data.commandArrShift[index])%4];
+                    //如果指令索引为0，即指令为GO，则还需改变对象的position
+                    if(!index){
+                        data.obj.position=data.obj.position.map(function(item,ind){
+                            //xy为变化后的x、y值，由于可能超出范围，故用xy临时常量进行判断，如符合再更新。data.size[ind]为棋盘边界
+                            const xy=item+data.directionMove[now][ind];
+                            if(xy>0 && xy<=data.size[ind]){
+                                return xy;
+                            }else{
+                                return item;
+                            }
+                        })
+                    }
+                }
+                render(data.obj);
+            }
+            window.onload=function(){
+                const size=data.size;
+                //初始化表格，用innerhtml储存
+                //表格行的id为row-i，i为数字
+                //表格单元格的id为celli-j，i，j为对应行列
+                let innerhtml='';
+                for(let i=0;i<=size[0];i++){
+                    innerhtml+='<tr id="row-'+i+'">';
+                    for(let j=0;j<=size[1];j++){
+                        if(i*j===0 && i+j!==0){
+                            innerhtml+='<td id="cellxy'+i+'-'+j+'">'+(i+j)+'</td>';
+                        }else{
+                            innerhtml+='<td id="cell'+i+'-'+j+'"></td>';
+                        }
+                    }
+                    innerhtml+='</tr>';
+                }
+                $("table").innerHTML=innerhtml;
+                //初始化棋子
+                render(data.obj);
+                //初始化input框的下拉指令列表
+                $('com').innerHTML='<option>'+data.commandArr.reduce(function(a,b){
+                    return a+'</option><option>'+b;
+                })+'</option>';
+                //绑定按钮点击事件
+                $('command').onclick=function(){command($('commandTxt').value)};
+                
+                //自行添加的键盘事件，上下左右，方便操作
+                document.addEventListener('keydown',function(event){
+                    var e = event || window.event;
+                    switch(e.keyCode){
+                        case 37://left
+                            data.obj.state=data.direction[3];
+                            command('GO');
+                            break;
+                        case 38://up
+                            data.obj.state=data.direction[0];
+                            command('GO');
+                            break;
+                        case 39://right
+                            data.obj.state=data.direction[1];
+                            command('GO');
+                            break;
+                        case 40://down
+                            data.obj.state=data.direction[2];
+                            command('GO');
+                            break;
+                    };
+                });
+            }
+        </script>
+    </body>
+</html>
