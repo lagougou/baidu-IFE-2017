@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>baidu ife yaoyao-3</title>
+        <meta name="author" content="lzl">
+        <meta name="description" content="ife task yy-3">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            form{
+                width: 60%;
+                margin: 0 auto;
+                min-width: 400px;
+                max-width: 600px;
+            }
+            .flex{
+                display: flex;
+                justify-content:space-around;
+                margin: 20px 0;
+            }
+            input[name="identy"]{
+                background-color: #00d;
+            }
+            div[id='outSchool']{
+                display: none;
+            }
+            select[id='privince']{
+                width: 30%;
+                border-radius: 5px;
+            }
+            select[id='school']{
+                width: 50%;
+                border-radius: 5px;
+            }
+            input[id='company']{
+                width: 70%;
+                border: 1px solid #aaa;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <form id='liandong'>
+            <div class="flex">
+                <label><input type="radio" name="identy" value="inSchool" checked> 在校生</label>
+                <label><input type="radio" name="identy" value="outSchool"> 非在校生</label>
+            </div>
+            <div id="inSchool" class="flex">
+                <span>学校</span>
+                <select id="privince"></select>
+                <select id="school"></select>
+            </div>
+            <div id="outSchool" class="flex">
+                <span>就业单位</span>
+                <input id="company">
+            </div>
+        </form>
+        <script>
+            const $=function(id){return document.getElementById(id)};
+            const obj={
+                province:['北京','天津','上海'],
+                school:[['清华大学','北京大学','中国人民大学'],['南开大学','天津大学','天津师范大学'],['复旦大学','东华大学','上海交通大学']]
+            };
+            window.onload=function(){
+                //事件委托，在冒泡时发生
+                $('liandong').onclick=function(e){
+                    const target=e.target;
+                    if (target.name==='identy'){
+                        const iden=document.querySelectorAll('[name="identy"]');
+                        iden.forEach(function(item){
+                            if(item.checked){
+                              $(item.value).style.display='flex';
+                            }else{
+                              $(item.value).style.display='none';
+                            }
+                        });
+                    }
+                }
+                //getOption函数用于获取选项数组对应的innerHtml代码
+                function getOption(arr){
+                    return '<option>'+arr.reduce(function(a,b){
+                        return a+'</option><option>'+b
+                    })+'</option>'
+                }
+                $('privince').onchange=function(e){
+                    const index=e.target.selectedIndex;
+                    $('school').innerHTML=getOption(obj.school[index]);
+                };
+                //初始化
+                $('privince').innerHTML=getOption(obj.province);
+                $('school').innerHTML=getOption(obj.school[0]);
+            }
+        </script>
+    </body>
+</html>
