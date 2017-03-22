@@ -22,3 +22,7 @@ DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-4.html
 ## 文件名：yaoyao-5.html  
 听指令的小方块（二）  
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-5.html  
+  
+## 文件名：yaoyao-6.html  
+UI组件之浮出层（原生JS）
+DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-6.html  
