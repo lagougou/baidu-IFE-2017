@@ -24,5 +24,5 @@ DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-4.html
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-5.html  
   
 ## 文件名：yaoyao-6.html  
-UI组件之浮出层（原生JS）
+UI组件之浮出层（原生JS）  
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-6.html  
