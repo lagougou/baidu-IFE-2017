@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>baidu ife yaoyao-6</title>
+        <meta name="author" content="lzl">
+        <meta name="description" content="ife task yy-6">
+        <link rel="stylesheet" type="text/css" href="yaoyao-6.css">
+        <style>
+            button{
+                -moz-user-select:none;
+                -webkit-user-select:none;
+                user-select:none; 
+                height: 100px;
+                width: 220px;
+                margin:20px;
+                line-height: 50px;
+                font-size: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="alert">提示框</button>
+        <button onclick='console.log("234");'>控制台是否响应</button>
+        <script src="yaoyao-6.js"></script>
+        <script>
+            //下面为可传入的参数
+            /*title:String,标题文字
+             *content:String,内容文字
+             *btnYes:String,确定按钮文字
+             *btnNo:String,取消按钮文字
+             *style:{
+                  //width,height,left,top可以传入数字，也可以传入单位为百分比的字符串等，默认单位是px
+                  //这里有一个BUG，如果height与width传入的是数字或字符串型数字，则默认居中。如果传入的是带单位的字符串，则默认靠左靠上
+                  //BUG的原因是window.innerWidth-this.cfg.style.width无法处理带单位的值
+                  width: 300,
+                  height: 200,
+                  left:'',
+                  top:''
+              },
+             *isModal:Boolean,是否为模态窗口（在透明区域点击是否关闭）
+             *isDrag:Boolean,是否可拖拽
+             *btnYesHandler:Function,单击确定按钮执行的函数
+             *btnNoHandler:Function,单击取消按钮执行的函数
+            */
+            //应用层
+            (function(w){
+                $('alert').onclick=function(){
+                    const win=new w;
+                    win.alert({
+                        title:'提示',
+                        isModal:true,
+                        isDrag:true,
+                        style:{height:'200',width:'300'},
+                        btnYesHandler:null,
+                        btnNoHandler:function(){alert('确定取消')}
+                    });
+                };
+            })(alertWindow)
+        </script>
+    </body>
+</html>
