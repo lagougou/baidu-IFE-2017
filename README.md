@@ -1,4 +1,4 @@
-# baidu-IFE-2017(http://ife.baidu.com/)尽量不要用国产浏览器尝试打开demo，建议用新版chrome  
+# baidu-IFE-2017 (http://ife.baidu.com/) 尽量不要用国产浏览器尝试打开demo，建议用新版chrome  
 ## 文件名：ldq-echarts01.html  
 ECharts NO.1 - 零基础绘制ECharts图表  
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/ldq-echarts01.html  
