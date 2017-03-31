@@ -1,4 +1,4 @@
-# baidu-IFE-2017 (http://ife.baidu.com/) 尽量不要用国产浏览器尝试打开demo，建议用新版chrome  
+# baidu-IFE-2017 (http://ife.baidu.com/) 尽量不用国产浏览器尝试打开demo，建议用新版chrome  
 ## 文件名：ldq-echarts01.html  
 ECharts NO.1 - 零基础绘制ECharts图表  
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/ldq-echarts01.html  
@@ -30,3 +30,7 @@ DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-6.html  
 ## 文件名：yaoyao-7.html  
 UI组件之排序表格（原生JS）  
 DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-7.html  
+  
+## 文件名：xiaoguang-1.js  
+网页抓取分析服务系列之一（基础分析）————phantomjs  
+代码地址：https://github.com/kbscwdb/baidu-IFE-2017/blob/gh-pages/nuomi/xiaoguang/xiaoguang-1.js
