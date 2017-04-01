@@ -34,3 +34,7 @@ DEMO：https://kbscwdb.github.io/baidu-IFE-2017/yaoyao-7.html  
 ## 文件名：xiaoguang-1.js  
 网页抓取分析服务系列之一（基础分析）————phantomjs  
 代码地址：https://github.com/kbscwdb/baidu-IFE-2017/blob/gh-pages/nuomi/xiaoguang/xiaoguang-1.js
+  
+## 文件名：xiaoguang-2.js  
+网页抓取分析服务系列之二（设备模拟）————phantomjs  
+代码地址：https://github.com/kbscwdb/baidu-IFE-2017/blob/gh-pages/nuomi/xiaoguang/xiaoguang-2.js
